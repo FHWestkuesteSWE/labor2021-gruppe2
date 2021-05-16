@@ -27,7 +27,7 @@
 <XPD:ATTR name="Left" type="integer">148</XPD:ATTR>
 <XPD:ATTR name="Top" type="integer">176</XPD:ATTR>
 <XPD:ATTR name="Width" type="integer">301</XPD:ATTR>
-<XPD:ATTR name="Height" type="integer">61</XPD:ATTR>
+<XPD:ATTR name="Height" type="integer">95</XPD:ATTR>
 <XPD:REF name="Model">SNmEAUYvxkedPOTDA1tGTgAA</XPD:REF>
 <XPD:OBJ name="NameCompartment" type="UMLNameCompartmentView" guid="wAB7xg9eqU+XR6NhGveeuAAA">
 <XPD:OBJ name="NameLabel" type="LabelView" guid="kZtR82EKuEGQYjTaNTY8ZAAA">
@@ -86,7 +86,7 @@
 <XPD:OBJ name="OwnedViews[2]" type="UMLAssociationView" guid="9xaVoXT8WEKWrcvtqfYFNgAA">
 <XPD:ATTR name="LineColor" type="string">clMaroon</XPD:ATTR>
 <XPD:ATTR name="FillColor" type="string">$00B9FFFF</XPD:ATTR>
-<XPD:ATTR name="Points" type="Points">385,176;672,77</XPD:ATTR>
+<XPD:ATTR name="Points" type="Points">420,176;672,79</XPD:ATTR>
 <XPD:REF name="Model">tiMXSMqKxUODF8pzupFNVgAA</XPD:REF>
 <XPD:REF name="Head">Ai/VNWOqV0KeEMRJBXlTMQAA</XPD:REF>
 <XPD:REF name="Tail">5RoLJJbI8U62qkQFBea6EAAA</XPD:REF>
@@ -201,7 +201,7 @@
 <XPD:OBJ name="OwnedViews[4]" type="UMLAssociationView" guid="EIFkopNN3E+/IeKYiP6/xAAA">
 <XPD:ATTR name="LineColor" type="string">clMaroon</XPD:ATTR>
 <XPD:ATTR name="FillColor" type="string">$00B9FFFF</XPD:ATTR>
-<XPD:ATTR name="Points" type="Points">421,236;664,295</XPD:ATTR>
+<XPD:ATTR name="Points" type="Points">448,254;664,298</XPD:ATTR>
 <XPD:REF name="Model">Ws74SR+pXUSmGigv2EIE/AAA</XPD:REF>
 <XPD:REF name="Head">hGIsbCROxEuidDWP7b3vWQAA</XPD:REF>
 <XPD:REF name="Tail">5RoLJJbI8U62qkQFBea6EAAA</XPD:REF>
@@ -309,6 +309,12 @@
 <XPD:REF name="Associations[1]">xgPjNZGS8kux5hVbedozoAAA</XPD:REF>
 <XPD:REF name="Associations[2]">PZVGMI9uQ0Kzk6zmv4ZsogAA</XPD:REF>
 <XPD:REF name="Associations[3]">P4ohWUjPYkGJQIqZpJaivQAA</XPD:REF>
+<XPD:ATTR name="#Attributes" type="integer">1</XPD:ATTR>
+<XPD:OBJ name="Attributes[0]" type="UMLAttribute" guid="bvVG0eBgWEaVc/uiugawdAAA">
+<XPD:ATTR name="Name" type="string">LampenStatus</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">bool []</XPD:ATTR>
+<XPD:REF name="Owner">SNmEAUYvxkedPOTDA1tGTgAA</XPD:REF>
+</XPD:OBJ>
 </XPD:OBJ>
 <XPD:OBJ name="OwnedElements[1]" type="UMLClass" guid="kEEizSdPCEuVkTqcw6RwEQAA">
 <XPD:ATTR name="Name" type="string">Beleuchtungseinrichtung</XPD:ATTR>
