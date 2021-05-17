@@ -5,7 +5,6 @@
 #include <algorithm>
 #include <boost/thread/thread.hpp>
 #include <boost/bind.hpp>
-#include <cstring>
 
 void BasicServer::session(socket_ptr sock)
 {
@@ -64,32 +63,4 @@ void BasicServer::processRequest(char req[], char ans[]) {
 
 BasicServer::~BasicServer()
 {
-}
-
-// Beleuchtungsfunktionen
-void BasicServer::beleuchtungInit() {
-
-}
-
-
-
-
-
-
-void BasicServer::sendRequest(const char request[], char answer[]) {
-	char beleuchtungIPAdresse[] = "127.0.0.1";
-	char beleuchtungPort[] = "5001";
-	boost::asio::io_service io_service;
-
-	boost::asio::ip::tcp::resolver resolver(io_service);
-	boost::asio::ip::tcp::resolver::query query(boost::asio::ip::tcp::v4(), beleuchtungIPAdresse, beleuchtungPort);
-	boost::asio::ip::tcp::resolver::iterator iterator = resolver.resolve(query);
-
-	boost::asio::ip::tcp::socket s(io_service);
-	boost::asio::connect(s, iterator);
-
-	size_t request_length = strlen(request) + 1;
-	boost::asio::write(s, boost::asio::buffer(request, request_length));
-
-	size_t reply_length = boost::asio::read(s,boost::asio::buffer(answer, max_length));
 }

@@ -151,7 +151,6 @@
   <ItemGroup>
     <ClCompile Include="BasicServer.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Server.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicServer.h" />
