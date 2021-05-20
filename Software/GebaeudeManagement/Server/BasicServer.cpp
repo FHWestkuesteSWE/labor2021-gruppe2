@@ -6,13 +6,33 @@
 #include <boost/thread/thread.hpp>
 #include <boost/bind.hpp>
 #include <cstring>
+#include <iterator>
+
+
+BasicServer::~BasicServer()
+{
+}
+
+BasicServer::BasicServer()
+{
+	for (int x = 0; x < std::size(serverBeleuchtung); x++) {
+		serverBeleuchtung[x] = false;
+	}
+}
 
 void BasicServer::session(socket_ptr sock)
 {
 	try
 	{
+		int cycleCounter = 0;
 		for (;;)
 		{
+			// Data gethering cicle
+			if (cycleCounter >= 500) {
+				getLightInfo();
+				cycleCounter = 0;
+			}
+
 			char request[BasicServer::max_length];
 			char answer[BasicServer::max_length];
 			boost::system::error_code error;
@@ -23,16 +43,13 @@ void BasicServer::session(socket_ptr sock)
 				throw boost::system::system_error(error); // Some other error.
 			this->processRequest(request,answer);
 			boost::asio::write(*sock, boost::asio::buffer(boost::asio::buffer(answer), max_length));
+			cycleCounter++;
 		}
 	}
 	catch (std::exception& e)
 	{
 		std::cerr << "Exception in thread: " << e.what() << "\n";
 	}
-}
-BasicServer::BasicServer()
-{
-
 }
 
 void BasicServer::start(char port[]) {
@@ -49,12 +66,25 @@ void BasicServer::start(char port[]) {
 	}
 }
 
-/*
-Simple Server: just replies by echoing
-*/
+//---------------------------------------------------------------
+// General PLC Functions
+
+// Server Answer Management
 void BasicServer::processRequest(char req[], char ans[]) {
 	if (strcmp(req, "LightOff") == 0) {
 		strncpy(ans, "Beleuchtung wird ausgeschaltet\0", std::min<int>(max_length, strlen(ans) + 1));
+		// Turn of every Light
+		turnOffAllLight();
+	}
+	else if (strcmp(req, "getLightInfo") == 0) {
+		
+		char dataString[BasicServer::max_length]; // ggf. Dynamischer machen
+		for (int x = 0; x < std::size(serverBeleuchtung); x++) {
+			if (serverBeleuchtung[x]) dataString[x] = '1';
+			else dataString[x] = '0';
+			dataString[x + 1] = '\0';
+		}
+		strncpy(ans, dataString, std::min<int>(max_length, strlen(ans) + 1));
 	}
 	else {
 		strncpy(ans, "Unbekannter Befehl\0", std::min<int>(max_length, strlen(ans) + 1));
@@ -62,20 +92,38 @@ void BasicServer::processRequest(char req[], char ans[]) {
 
 }
 
-BasicServer::~BasicServer()
-{
+// Function to turn of every light in the given building
+void BasicServer::turnOffAllLight() {
+	for (int x = 0; x < std::size(serverBeleuchtung); x++) {
+		beleuchtungsZustaende[x] = serverBeleuchtung[x];
+	}
+}
+// Function to get Information about every Light in the given Building
+void BasicServer::getLightInfo() {
+	for (int x = 0; x < std::size(beleuchtungsZustaende); x++) {
+		serverBeleuchtung[x] = beleuchtungsZustaende[x];
+	}
 }
 
-// Beleuchtungsfunktionen
+
+//----------------------------------------------------------------
+// Light simulation functions
 void BasicServer::beleuchtungInit() {
-
+	srand(time(NULL));
+	int randNum = 0;
+	for (int x = 0; x < std::size(beleuchtungsZustaende); x++) {
+		int randNum = rand() % 2;
+		if (randNum > 0) beleuchtungsZustaende[x] = true;
+		else beleuchtungsZustaende[x] = false;
+	}
 }
 
 
 
 
 
-
+// ----------------------------------------------------------------
+// Clientfunctions
 void BasicServer::sendRequest(const char request[], char answer[]) {
 	char beleuchtungIPAdresse[] = "127.0.0.1";
 	char beleuchtungPort[] = "5001";

@@ -1,9 +1,13 @@
 #pragma once
 
+// Boots Libs
 #include <boost/bind.hpp>
 #include <boost/asio.hpp>
 #include <boost/smart_ptr.hpp>
 #include <boost/thread/thread.hpp>
+
+// Other Libs
+#include <iostream>
 
 
 typedef boost::shared_ptr<boost::asio::ip::tcp::socket> socket_ptr;
@@ -21,8 +25,9 @@ public:
 	void sendRequest(const char request[], char answer[]);
 
 	// Prozessleitfunktion
-	bool serverbeleuchtung[100];
-
+	bool serverBeleuchtung[100];
+	void turnOffAllLight();
+	void getLightInfo();
 	//Beleuchtungssystem
 	bool beleuchtungsZustaende[100];
 	void beleuchtungInit();
