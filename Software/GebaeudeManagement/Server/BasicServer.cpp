@@ -79,6 +79,7 @@ void BasicServer::processRequest(char req[], char ans[]) {
 	else if (strcmp(req, "getLightInfo") == 0) {
 		
 		char dataString[BasicServer::max_length]; // ggf. Dynamischer machen
+		getLightInfo();
 		for (int x = 0; x < std::size(serverBeleuchtung); x++) {
 			if (serverBeleuchtung[x]) dataString[x] = '1';
 			else dataString[x] = '0';
@@ -95,7 +96,7 @@ void BasicServer::processRequest(char req[], char ans[]) {
 // Function to turn of every light in the given building
 void BasicServer::turnOffAllLight() {
 	for (int x = 0; x < std::size(serverBeleuchtung); x++) {
-		beleuchtungsZustaende[x] = serverBeleuchtung[x];
+		beleuchtungsZustaende[x] = false;
 	}
 }
 // Function to get Information about every Light in the given Building
