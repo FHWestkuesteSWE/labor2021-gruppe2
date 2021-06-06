@@ -15,7 +15,7 @@ BasicServer::~BasicServer()
 
 BasicServer::BasicServer()
 {
-	for (int x = 0; x < std::size(serverBeleuchtung); x++) {
+	for (int x = 0; x < 100; x++) {
 		serverBeleuchtung[x] = false;
 	}
 }
@@ -33,10 +33,11 @@ void BasicServer::session(socket_ptr sock)
 				cycleCounter = 0;
 			}
 
-			char request[BasicServer::max_length];
-			char answer[BasicServer::max_length];
+			char request[BasicServer::max_length] = { 0 };
+			char answer[BasicServer::max_length] = { 0 };
 			boost::system::error_code error;
-			size_t length = sock->read_some(boost::asio::buffer(request), error);
+			//size_t length = sock->read_some(boost::asio::buffer(request), error);
+			sock->read_some(boost::asio::buffer(request), error);
 			if (error == boost::asio::error::eof)
 				break; // Connection closed cleanly by peer.
 			else if (error)
@@ -57,7 +58,7 @@ void BasicServer::start(char port[]) {
 
 	using namespace std; // For atoi.
 	using boost::asio::ip::tcp;
-	tcp::acceptor a(io_service, tcp::endpoint(tcp::v4(), atoi(port)));
+	tcp::acceptor a(io_service, tcp::endpoint(tcp::v4(), static_cast<boost::asio::ip::port_type>(atoi(port))));
 	for (;;)
 	{
 		socket_ptr sock(new tcp::socket(io_service));
@@ -68,27 +69,30 @@ void BasicServer::start(char port[]) {
 
 //---------------------------------------------------------------
 // General PLC Functions
-
 // Server Answer Management
 void BasicServer::processRequest(char req[], char ans[]) {
 	if (strcmp(req, "LightOff") == 0) {
-		strncpy(ans, "Beleuchtung wird ausgeschaltet\0", std::min<int>(max_length, strlen(ans) + 1));
+		// Suffix aendern, oder static_cast
+		// strncpy(ans, "Beleuchtung wird ausgeschaltet\0", std::min<int>(max_length, strlen(ans) + 1ull));
+		// strncpy(ans, "Beleuchtung wird ausgeschaltet\0", std::min<int>(max_length, strlen(ans) + static_cast<size_t>(1)));
+		strncpy(ans, "Beleuchtung wird ausgeschaltet\0", static_cast<size_t>(max_length));
+		//ans[strlen(ans) - 1] = 0;
 		// Turn of every Light
 		turnOffAllLight();
 	}
 	else if (strcmp(req, "getLightInfo") == 0) {
 		
-		char dataString[BasicServer::max_length]; // ggf. Dynamischer machen
+		char dataString[BasicServer::max_length] = "\0"; // ggf. Dynamischer machen
 		getLightInfo();
 		for (int x = 0; x < std::size(serverBeleuchtung); x++) {
 			if (serverBeleuchtung[x]) dataString[x] = '1';
 			else dataString[x] = '0';
 			dataString[x + 1] = '\0';
 		}
-		strncpy(ans, dataString, std::min<int>(max_length, strlen(ans) + 1));
+		strncpy(ans, dataString, static_cast<size_t>(max_length));
 	}
 	else {
-		strncpy(ans, "Unbekannter Befehl\0", std::min<int>(max_length, strlen(ans) + 1));
+		strncpy(ans, "Unbekannter Befehl\0", static_cast<size_t>(max_length));
 	}
 
 }
@@ -110,16 +114,12 @@ void BasicServer::getLightInfo() {
 //----------------------------------------------------------------
 // Light simulation functions
 void BasicServer::beleuchtungInit() {
-	srand(time(NULL));
-	int randNum = 0;
+	srand(static_cast<unsigned int>(time(NULL)));
 	for (int x = 0; x < std::size(beleuchtungsZustaende); x++) {
-		int randNum = rand() % 2;
-		if (randNum > 0) beleuchtungsZustaende[x] = true;
+		if ((rand() % 2) > 0) beleuchtungsZustaende[x] = true;
 		else beleuchtungsZustaende[x] = false;
 	}
 }
-
-
 
 
 
@@ -140,5 +140,7 @@ void BasicServer::sendRequest(const char request[], char answer[]) {
 	size_t request_length = strlen(request) + 1;
 	boost::asio::write(s, boost::asio::buffer(request, request_length));
 
-	size_t reply_length = boost::asio::read(s,boost::asio::buffer(answer, max_length));
+	//size_t reply_length = boost::asio::read(s,boost::asio::buffer(answer, max_length));
+	boost::asio::read(s, boost::asio::buffer(answer, max_length));
+
 }

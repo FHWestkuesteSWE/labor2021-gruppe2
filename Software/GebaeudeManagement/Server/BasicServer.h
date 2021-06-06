@@ -25,11 +25,12 @@ public:
 	void sendRequest(const char request[], char answer[]);
 
 	// Prozessleitfunktion
-	bool serverBeleuchtung[100];
+	bool serverBeleuchtung[100]{ 0 };
 	void turnOffAllLight();
 	void getLightInfo();
+
 	//Beleuchtungssystem
-	bool beleuchtungsZustaende[100];
+	bool beleuchtungsZustaende[100]{ 0 };
 	void beleuchtungInit();
 
 

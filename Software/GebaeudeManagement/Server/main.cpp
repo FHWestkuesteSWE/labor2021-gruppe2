@@ -1,6 +1,7 @@
 #include "BasicServer.h"
 
-int main(int argc, char* argv[]) {
+//int main(int argc, char* argv[]) {
+int main() {
 	BasicServer s;
 	// Define Port
 	char serverPort[] = "5000";

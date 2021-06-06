@@ -53,10 +53,11 @@ Simple Server: just replies by echoing
 */
 void BasicServer::processRequest(char req[], char ans[]) {
 	if (strcmp(req, "LightOff") == 0) {
-		strncpy(ans, "Beleuchtung wird ausgeschaltet\0", std::min<int>(max_length, strlen(ans) + 1));
+		strncpy(ans, "Beleuchtung wird ausgeschaltet\0", static_cast<size_t>(max_length));
+
 	}
 	else {
-		strncpy(ans, "Unbekannter Befehl\0", std::min<int>(max_length, strlen(ans) + 1));
+		strncpy(ans, "Unbekannter Befehl\0", static_cast<size_t>(max_length));
 	}
 
 }
