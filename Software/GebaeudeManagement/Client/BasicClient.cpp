@@ -18,7 +18,10 @@ void BasicClient::sendRequest(const char request[], char answer[]) {
 	size_t request_length = strlen(request)+1;
 	boost::asio::write(s, boost::asio::buffer(request, request_length));
 
-	size_t reply_length = boost::asio::read(s,
+	//size_t reply_length = boost::asio::read(s,
+	//	boost::asio::buffer(answer, max_length));
+
+	boost::asio::read(s,
 		boost::asio::buffer(answer, max_length));
 }
 BasicClient::~BasicClient() {
