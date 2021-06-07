@@ -1,6 +1,6 @@
 // main.cpp : Diese Datei enthält die Funktion "main". Hier beginnt und endet die Ausführung des Programms.
-//Jost test
 
+// Einbindung von Bibliotheken
 #include <iostream>
 #include "BasicClient.h"
 
@@ -8,11 +8,11 @@ using namespace std;
 int main(int argc, char* argv[])
 {
     // Define Server IP/PORT
-    char serverAdresse[] = "127.0.0.1";
-    char serverPort[] = "5000";
+    char server_adresse[] = "127.0.0.1";
+    char server_port[] = "5000";
     //Client c(argv[1], argv[2]);
-    BasicClient c(serverAdresse, serverPort);
-    bool lightInfo[100];
+    BasicClient c(server_adresse, server_port);
+    bool light_info[100];
     char req[1024];
     char ans[1024];
     char wahl;
@@ -40,16 +40,16 @@ int main(int argc, char* argv[])
             strcpy_s(req, "getLightInfo\0");
             c.sendRequest(req, ans);
             // Light Management
-            for (int x = 0; x < std::size(lightInfo); x++) {
-                if (ans[x] == '0') lightInfo[x] = false;
-                else lightInfo[x] = true;
+            for (int x = 0; x < std::size(light_info); x++) {
+                if (ans[x] == '0') light_info[x] = false;
+                else light_info[x] = true;
             }
             std::cout << "Light Info has been loaded\n";
             break;
         case 's': // Show Light Information
-            for (int x = 0; x < std::size(lightInfo); x++) {
+            for (int x = 0; x < std::size(light_info); x++) {
                 if ((x % 10) == 0) std::cout << "\n | ";
-                std::cout << lightInfo[x] << " | ";
+                std::cout << light_info[x] << " | ";
             }
             break;
         default:;

@@ -13,7 +13,7 @@ public:
 	void start(char port[]);
 	BasicServer();
 	~BasicServer();
-	const static int max_length=1024;
+	const static int max_length_=1024;
 
 private:
 	void session(socket_ptr sock);

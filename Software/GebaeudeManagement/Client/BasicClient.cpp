@@ -2,14 +2,14 @@
 
 
 BasicClient::BasicClient(char _server[], char _port[]) {
-	server = _server;
-	port = _port;
+	server_ = _server;
+	port_ = _port;
 }
 void BasicClient::sendRequest(const char request[], char answer[]) {
 	boost::asio::io_service io_service;
 
 	tcp::resolver resolver(io_service);
-	tcp::resolver::query query(tcp::v4(), server, port);
+	tcp::resolver::query query(tcp::v4(), server_, port_);
 	tcp::resolver::iterator iterator = resolver.resolve(query);
 
 	tcp::socket s(io_service);
@@ -22,7 +22,7 @@ void BasicClient::sendRequest(const char request[], char answer[]) {
 	//	boost::asio::buffer(answer, max_length));
 
 	boost::asio::read(s,
-		boost::asio::buffer(answer, max_length));
+		boost::asio::buffer(answer, max_length_));
 }
 BasicClient::~BasicClient() {
 

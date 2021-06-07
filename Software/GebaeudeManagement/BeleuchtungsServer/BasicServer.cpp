@@ -12,8 +12,8 @@ void BasicServer::session(socket_ptr sock)
 	{
 		for (;;)
 		{
-			char request[BasicServer::max_length];
-			char answer[BasicServer::max_length];
+			char request[BasicServer::max_length_];
+			char answer[BasicServer::max_length_];
 			boost::system::error_code error;
 			size_t length = sock->read_some(boost::asio::buffer(request), error);
 			if (error == boost::asio::error::eof)
@@ -21,7 +21,7 @@ void BasicServer::session(socket_ptr sock)
 			else if (error)
 				throw boost::system::system_error(error); // Some other error.
 			this->processRequest(request,answer);
-			boost::asio::write(*sock, boost::asio::buffer(boost::asio::buffer(answer), max_length));
+			boost::asio::write(*sock, boost::asio::buffer(boost::asio::buffer(answer), max_length_));
 		}
 	}
 	catch (std::exception& e)
@@ -53,11 +53,11 @@ Simple Server: just replies by echoing
 */
 void BasicServer::processRequest(char req[], char ans[]) {
 	if (strcmp(req, "LightOff") == 0) {
-		strncpy(ans, "Beleuchtung wird ausgeschaltet\0", static_cast<size_t>(max_length));
+		strncpy(ans, "Beleuchtung wird ausgeschaltet\0", static_cast<size_t>(max_length_));
 
 	}
 	else {
-		strncpy(ans, "Unbekannter Befehl\0", static_cast<size_t>(max_length));
+		strncpy(ans, "Unbekannter Befehl\0", static_cast<size_t>(max_length_));
 	}
 
 }

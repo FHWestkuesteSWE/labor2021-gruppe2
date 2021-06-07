@@ -16,7 +16,7 @@ BasicServer::~BasicServer()
 BasicServer::BasicServer()
 {
 	for (int x = 0; x < 100; x++) {
-		serverBeleuchtung[x] = false;
+		server_beleuchtung_[x] = false;
 	}
 }
 
@@ -33,17 +33,17 @@ void BasicServer::session(socket_ptr sock)
 				cycleCounter = 0;
 			}
 
-			char request[BasicServer::max_length] = { 0 };
-			char answer[BasicServer::max_length] = { 0 };
+			char request[BasicServer::max_length_] = { 0 };
+			char answer[BasicServer::max_length_] = { 0 };
 			boost::system::error_code error;
-			//size_t length = sock->read_some(boost::asio::buffer(request), error);
+			// size_t length = sock->read_some(boost::asio::buffer(request), error);
 			sock->read_some(boost::asio::buffer(request), error);
 			if (error == boost::asio::error::eof)
 				break; // Connection closed cleanly by peer.
 			else if (error)
 				throw boost::system::system_error(error); // Some other error.
 			this->processRequest(request,answer);
-			boost::asio::write(*sock, boost::asio::buffer(boost::asio::buffer(answer), max_length));
+			boost::asio::write(*sock, boost::asio::buffer(boost::asio::buffer(answer), max_length_));
 			cycleCounter++;
 		}
 	}
@@ -75,38 +75,38 @@ void BasicServer::processRequest(char req[], char ans[]) {
 		// Suffix aendern, oder static_cast
 		// strncpy(ans, "Beleuchtung wird ausgeschaltet\0", std::min<int>(max_length, strlen(ans) + 1ull));
 		// strncpy(ans, "Beleuchtung wird ausgeschaltet\0", std::min<int>(max_length, strlen(ans) + static_cast<size_t>(1)));
-		strncpy(ans, "Beleuchtung wird ausgeschaltet\0", static_cast<size_t>(max_length));
+		strncpy(ans, "Beleuchtung wird ausgeschaltet\0", static_cast<size_t>(max_length_));
 		//ans[strlen(ans) - 1] = 0;
 		// Turn of every Light
 		turnOffAllLight();
 	}
 	else if (strcmp(req, "getLightInfo") == 0) {
 		
-		char dataString[BasicServer::max_length] = "\0"; // ggf. Dynamischer machen
+		char dataString[BasicServer::max_length_] = "\0"; // ggf. Dynamischer machen
 		getLightInfo();
-		for (int x = 0; x < std::size(serverBeleuchtung); x++) {
-			if (serverBeleuchtung[x]) dataString[x] = '1';
+		for (int x = 0; x < std::size(server_beleuchtung_); x++) {
+			if (server_beleuchtung_[x]) dataString[x] = '1';
 			else dataString[x] = '0';
 			dataString[x + 1] = '\0';
 		}
-		strncpy(ans, dataString, static_cast<size_t>(max_length));
+		strncpy(ans, dataString, static_cast<size_t>(max_length_));
 	}
 	else {
-		strncpy(ans, "Unbekannter Befehl\0", static_cast<size_t>(max_length));
+		strncpy(ans, "Unbekannter Befehl\0", static_cast<size_t>(max_length_));
 	}
 
 }
 
 // Function to turn of every light in the given building
 void BasicServer::turnOffAllLight() {
-	for (int x = 0; x < std::size(serverBeleuchtung); x++) {
-		beleuchtungsZustaende[x] = false;
+	for (int x = 0; x < std::size(server_beleuchtung_); x++) {
+		beleuchtungs_zustaende_[x] = false;
 	}
 }
 // Function to get Information about every Light in the given Building
 void BasicServer::getLightInfo() {
-	for (int x = 0; x < std::size(beleuchtungsZustaende); x++) {
-		serverBeleuchtung[x] = beleuchtungsZustaende[x];
+	for (int x = 0; x < std::size(beleuchtungs_zustaende_); x++) {
+		server_beleuchtung_[x] = beleuchtungs_zustaende_[x];
 	}
 }
 
@@ -115,9 +115,9 @@ void BasicServer::getLightInfo() {
 // Light simulation functions
 void BasicServer::beleuchtungInit() {
 	srand(static_cast<unsigned int>(time(NULL)));
-	for (int x = 0; x < std::size(beleuchtungsZustaende); x++) {
-		if ((rand() % 2) > 0) beleuchtungsZustaende[x] = true;
-		else beleuchtungsZustaende[x] = false;
+	for (int x = 0; x < std::size(beleuchtungs_zustaende_); x++) {
+		if ((rand() % 2) > 0) beleuchtungs_zustaende_[x] = true;
+		else beleuchtungs_zustaende_[x] = false;
 	}
 }
 
@@ -141,6 +141,6 @@ void BasicServer::sendRequest(const char request[], char answer[]) {
 	boost::asio::write(s, boost::asio::buffer(request, request_length));
 
 	//size_t reply_length = boost::asio::read(s,boost::asio::buffer(answer, max_length));
-	boost::asio::read(s, boost::asio::buffer(answer, max_length));
+	boost::asio::read(s, boost::asio::buffer(answer, max_length_));
 
 }

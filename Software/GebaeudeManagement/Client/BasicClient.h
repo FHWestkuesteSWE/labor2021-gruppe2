@@ -14,9 +14,9 @@ public:
 	~BasicClient();
 protected:
 	
-	static const int max_length=1024;
+	static const int max_length_=1024;
 	
-	char *server, *port;
+	char *server_, *port_;
 
 };
 

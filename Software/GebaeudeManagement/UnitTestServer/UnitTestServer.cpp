@@ -15,9 +15,9 @@ namespace UnitTestServer
 			BasicServer s1;
 			s1.beleuchtungInit();
 			s1.turnOffAllLight();
-			for (int x = 0; x < std::size(s1.beleuchtungsZustaende); x++)
+			for (int x = 0; x < std::size(s1.beleuchtungs_zustaende_); x++)
 			{
-				Assert::IsFalse(s1.beleuchtungsZustaende[x]);
+				Assert::IsFalse(s1.beleuchtungs_zustaende_[x]);
 			}
 			
 		}
@@ -28,9 +28,9 @@ namespace UnitTestServer
 			s1.beleuchtungInit();
 			s1.getLightInfo();
 
-			for (int x = 0; x < std::size(s1.beleuchtungsZustaende); x++)
+			for (int x = 0; x < std::size(s1.beleuchtungs_zustaende_); x++)
 			{
-				Assert::AreEqual(s1.beleuchtungsZustaende[x],s1.serverBeleuchtung[x]);
+				Assert::AreEqual(s1.beleuchtungs_zustaende_[x],s1.server_beleuchtung_[x]);
 			}
 
 		}

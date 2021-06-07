@@ -19,19 +19,21 @@ public:
 	void start(char port[]);
 	BasicServer();
 	~BasicServer();
-	const static int max_length=1024;
+	const static int max_length_=1024;
 
 	// Client Funktionen
 	void sendRequest(const char request[], char answer[]);
 
 	// Prozessleitfunktion
-	bool serverBeleuchtung[100]{ 0 };
+	bool server_beleuchtung_[100]{ 0 };
 	void turnOffAllLight();
 	void getLightInfo();
 
-	//Beleuchtungssystem
-	bool beleuchtungsZustaende[100]{ 0 };
+	// Beleuchtungssystem
+	// Als neue Klasse konstruieren
+	bool beleuchtungs_zustaende_[100]{ 0 };
 	void beleuchtungInit();
+	
 
 
 
